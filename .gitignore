@@ -8,7 +8,7 @@ __pycache__/
 
 #
 Kivy_Env/
-
+KivyE/
 # Distribution / packaging
 .Python
 build/

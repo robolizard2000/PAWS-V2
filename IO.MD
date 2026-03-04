@@ -15,6 +15,8 @@
  - Light-Min            - R/N   - the automatic min threshold before the sytem turns light on
  - Light-overide        - R/N   - if light overde is on then controls the light form the app
  - Light-Set            - R/N   - Lignt control
+ - window-overide       - R/N   -
+ - window-Set           - R/N   -
 
  ## Data Reading
 All data there is reported to the mobile app
