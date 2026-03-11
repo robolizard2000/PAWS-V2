@@ -1,22 +1,28 @@
-<connect_BLE_Screen>:
-    cols: 2
-    Connections_Label: Connections_Label
-    Label:
-        row: 0
-        col: 0
-        text: "BLE Connection Screen"
-    Button:
-        row: 0
-        col: 1
-        text: "Scan for Devices"
-        on_press: root.Scan_Button_Pressed()
+<ConnectBLEScreen>:
+    GridLayout:
+        cols: 2
+        rows: 2
+        row_force_default: True
+        row_default_height: 50
 
-    Label:
-        row: 1
-        col: 0
-        text:"Connections"
-    Label:
-        row: 1
-        col: 1
-        id: "Connections_Label"
-        text: "No Devices Connected"
+        Label:
+            text: "BLE Connection Screen"
+            size_hint_x: None
+            width: 200
+
+        Button:
+            text: "Scan for Devices"
+            on_press: root.scan_button_pressed()
+            size_hint_x: None
+            width: 200
+
+        Label:
+            text: "Available Devices"
+            size_hint_x: None
+            width: 200
+
+        Label:
+            id: connections_label
+            text: "No Devices Connected"
+            size_hint_x: None
+            width: 200

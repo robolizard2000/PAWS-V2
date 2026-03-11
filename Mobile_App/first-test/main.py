@@ -16,9 +16,10 @@ async def main():
 
 #####
 
-class connect_BLE_Screen(GridLayout):
+class ConnectBLEScreen(GridLayout):
     def __init__(self, **kwargs):
-        super(connect_BLE_Screen, self).__init__(**kwargs)
+        super(ConnectBLEScreen, self).__init__(**kwargs)
+        self.ids.connections_label.text = "Not connected"
         #self.cols = 1
         #self.add_widget(Label(text="BLE Connection Screen"))
         #self.add_widget(Button(text="Scan for Devices", on_press=self.Scan_Button_Pressed()))
@@ -28,13 +29,14 @@ class connect_BLE_Screen(GridLayout):
     async def scan_for_devices(self): # creates an async function to perform the BLE scan and store the results in self.devices
         self.devices = await ble.scan()
 
-    def Scan_Button_Pressed(self):
+    def scan_button_pressed(self):
         asyncio.run(self.scan_for_devices())
-        print("Scan results:", self.devices)
+        print("Scan results:", self.devices[0][0])
+        self.ids.connections_label.text = self.devices[0][0]
 
 class PAWSApp(App):
     def build(self):
-        return connect_BLE_Screen()
+        return ConnectBLEScreen()
 
 # run the async main function
 if __name__ == "__main__":
