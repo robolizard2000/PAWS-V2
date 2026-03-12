@@ -8,21 +8,28 @@
 #define SERVICE_UUID        "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
 #define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
 
+
+const int debugPin = 2;   // Example: GPIO2 (often built-in LED)
+
 BLECharacteristic *pCharacteristic;
 bool deviceConnected = false;
 
 class MyServerCallbacks: public BLEServerCallbacks {
   void onConnect(BLEServer* pServer) {
     deviceConnected = true;
+    digitalWrite(debugPin, 1);
   }
 
   void onDisconnect(BLEServer* pServer) {
     deviceConnected = false;
+    digitalWrite(debugPin, 0);
   }
 };
 
 void setup() {
   Serial.begin(115200);
+
+  pinMode(debugPin, OUTPUT);
 
   BLEDevice::init("ESP32_BLE_Test");
   BLEServer *pServer = BLEDevice::createServer();

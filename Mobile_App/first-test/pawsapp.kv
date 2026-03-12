@@ -1,28 +1,42 @@
 <ConnectBLEScreen>:
     GridLayout:
         cols: 2
-        rows: 2
+        rows: 4
+        size_hint: 1, 1
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
         row_force_default: True
         row_default_height: 50
+        padding: 10
+        spacing: 10
 
-        Label:
+        Label: # label to show the title of the screen
             text: "BLE Connection Screen"
-            size_hint_x: None
-            width: 200
 
-        Button:
+        Button: # button to trigger the BLE scan
             text: "Scan for Devices"
             on_press: root.scan_button_pressed()
-            size_hint_x: None
-            width: 200
 
-        Label:
+        Label: # label to title the list of available devices
             text: "Available Devices"
-            size_hint_x: None
-            width: 200
+
+        Spinner:
+            id: device_spinner
+            text: "No Devices Found"
+            values: []
+            on_text: root.device_selected(self.text)
 
         Label:
-            id: connections_label
-            text: "No Devices Connected"
-            size_hint_x: None
-            width: 200
+            text:"Connect to Device"
+
+        Button:
+            id: connect_button
+            text: 'Connect to Device'
+            on_press: root.connect_button_pressed()
+
+        Label:
+            text:"Disconnect from Device"
+
+        Button:
+            id: disconnect_button
+            text: 'Disconnect from Device'
+            on_press: root.disconnect_button_pressed()

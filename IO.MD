@@ -1,5 +1,5 @@
 ## Settings 
- - Clock                - R/n   - how fequantly the sensors are checked and data is read from BLE 
+ - Clock                - R/n   - how fequantly the sensors are checked and data is read from BLE Seconds
  - Back-light-timer     - R/N   - time in mins bofore screen times out and back light goes out
  - LCD-Lock             - R/N   - if set to true locks out the LCD  and rotary encoder 
  - debug                - R/N   - if set to true then it will expose the debug settings 
