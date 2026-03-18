@@ -1,7 +1,7 @@
 <ConnectBLEScreen>:
     GridLayout:
         cols: 2
-        rows: 4
+        rows: 5
         size_hint: 1, 1
         pos_hint: {"center_x": 0.5, "center_y": 0.5}
         row_force_default: True
@@ -40,3 +40,10 @@
             id: disconnect_button
             text: 'Disconnect from Device'
             on_press: root.disconnect_button_pressed()
+
+        Label:
+            text:"Explore Services"
+        Button:
+            id: explore_button
+            text: 'Explore Services'
+            on_press: root.explore_services_button_pressed()

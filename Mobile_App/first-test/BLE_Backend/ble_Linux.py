@@ -26,3 +26,74 @@ class BLEBackend:
             await self.client.disconnect()
             print("Disconnected")
 
+    async def explore_services(self): # creates an async function to explore the services and characteristics of the currently connected BLE device and print them to the console
+        try:
+            services = list(self.client.services)
+            if not services:
+                print("No services found on this device.")
+                return
+
+            print(f"Found {len(services)} service(s):")
+
+            for service in services:
+                print(f"\nService: {service.uuid}")
+                print(f"Description: {service.description}")
+                print(f"Handle: {service.handle}")
+
+                # Get characteristics for this service
+                characteristics = service.characteristics
+
+                if characteristics:
+                    print(f"  Characteristics ({len(characteristics)}):")
+                    print("  " + "-" * 76)
+
+                    for char in characteristics:
+                        print(f"    UUID: {char.uuid}")
+                        print(f"    Description: {char.description}")
+                        print(f"    Handle: {char.handle}")
+                        print(f"    Properties: {', '.join(char.properties)}")
+
+                        # Try to read the characteristic if it's readable
+                        if "read" in char.properties:
+                            try:
+                                value = await self.client.read_gatt_char(char.uuid)
+                                # Try to decode as string, otherwise show as hex
+                                try:
+                                    decoded_value = value.decode('utf-8')
+                                    print(f"    Value (string): {decoded_value}")
+                                except UnicodeDecodeError:
+                                    hex_value = ' '.join(f'{b:02x}' for b in value)
+                                    print(f"    Value (hex): {hex_value}")
+                                    print(f"    Value (raw bytes): {value}")
+                            except Exception as e:
+                                print(f"    Value: <Could not read - {e}>")
+
+                        # Show descriptors only if requested
+                        descriptors = char.descriptors
+                        if descriptors:
+                            print(f"    Descriptors ({len(descriptors)}):")
+                            for desc in descriptors:
+                                print(f"      UUID: {desc.uuid}")
+                                print(f"      Description: {desc.description}")
+                                print(f"      Handle: {desc.handle}")
+                                # Try to read descriptor if possible
+                                try:
+                                    desc_value = await self.client.read_gatt_descriptor(desc.handle)
+                                    try:
+                                        decoded_desc = desc_value.decode('utf-8')
+                                        print(f"      Value (string): {decoded_desc}")
+                                    except UnicodeDecodeError:
+                                        hex_desc = ' '.join(f'{b:02x}' for b in desc_value)
+                                        print(f"      Value (hex): {hex_desc}")
+                                except Exception as e:
+                                    print(f"      Value: <Could not read - {e}>")
+                            print()  # Empty line between characteristics
+                        else:
+                            print()
+                else:
+                    print("    No characteristics found for this service.")
+
+                print("-" * 80)
+
+        except Exception as e:
+            print(f"Error exploring services: {e}")

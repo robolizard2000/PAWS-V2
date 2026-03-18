@@ -75,6 +75,11 @@ class ConnectBLEScreen(Screen):
         # asyncio.run(self.disconnect_from_device())
         print("Disconnected.")
 
+    def explore_services_button_pressed(self):
+        print("Exploring services...")
+        ble.run_async(ble.explore_services())
+        print("Service exploration complete.")
+        
 class PAWSApp(App):
     def build(self):
         return ConnectBLEScreen()
