@@ -27,6 +27,8 @@ class BLEBackend:
         if self.client and self.client.is_connected:
             await self.client.disconnect()
             print("Disconnected")
+            return True
+        return False
 
     async def read_characteristic(self, char_uuid): # creates an async function to read the value of a characteristic given its UUID and return the value
         if self.client and self.client.is_connected:

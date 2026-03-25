@@ -1,4 +1,5 @@
 <ConnectBLEScreen>:
+
     BoxLayout:
         orientation: 'vertical'
         Label: ## title of the screen
@@ -23,10 +24,41 @@
             Button:
                 text: 'Debug'
                 on_press: root.manager.current = 'debug_screen'
-        BoxLayout: ## content of the screen
+        GridLayout: ## content of the screen
+            cols: 2
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
             Label:
                 bold: True
-                text: 'Settings go here'
+                text: 'Scan for Devices'
+            Button:
+                id: scan_button
+                text: 'Scan'
+                on_press: root.scan_button_pressed()
+            Label:
+                bold: True
+                text: 'Available Devices'
+            Spinner:
+                disabled: True
+                id: device_spinner
+                text: 'Select Device'
+                values: []
+                on_text: root.device_selected(self.text)
+            Label:
+                bold: True
+                text: 'Connect to Device'
+            Button:
+                id: connect_button
+                text: 'Connect'
+                on_press: root.connect_button_pressed()
+                disabled: True
+            Label:
+                bold: True
+                text: 'Disconnect from Device'
+            Button:
+                id: disconnect_button
+                text: 'Disconnect'
+                on_press: root.disconnect_button_pressed()
+                disabled: True
 
 
 <DataScreen>:

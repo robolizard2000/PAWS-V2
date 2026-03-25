@@ -1,0 +1,20 @@
+[Global]: Debug logging started.
+[Global]: Starting PAWSApp
+[ConnectBLEScreen]: Debug logging started.
+[ConnectBLEScreen]: About to show screen
+[ConnectBLEScreen]: Screen is now visible
+[PAWSApp]: Debug logging started.
+[ConnectBLEScreen]: Scan button pressed
+[ConnectBLEScreen]: Device found: JBL TUNE525BT-LE at address F0:CE:95:2F:A5:62
+[ConnectBLEScreen]: Device found: ESP32_BLE_Test at address BC:DD:C2:CC:E3:46
+[ConnectBLEScreen]: Device found: GFPS_ADV at address 4C:7E:A3:D0:5C:AB
+[ConnectBLEScreen]: Device found: char-Data at address EC:E3:34:46:23:66
+[ConnectBLEScreen]: Device found: SensorPush HT.w F8D6 at address 90:7B:C6:AE:F8:D6
+[ConnectBLEScreen]: Selected device: char-Data
+[ConnectBLEScreen]: Connecting to: char-Data
+[ConnectBLEScreen]: Device address: EC:E3:34:46:23:66
+[ConnectBLEScreen]: Connection successful
+[PAWSApp]: Disconnecting from device on app exit...
+[PAWSApp]: Disconnected successfully on app exit.
+[PAWSApp]: Debug logging stopped.
+[Global]: Debug logging stopped.
