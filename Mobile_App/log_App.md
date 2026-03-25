@@ -4,3 +4,9 @@ pip install pyjnius
 pip install buildozer cython==0.29.36
 pip install --upgrade pip
  pip install bleak
+
+
+Increase attribute limit (BEST FIX)
+Go to:
+
+Tools → Partition Scheme → Huge APP (or similar)

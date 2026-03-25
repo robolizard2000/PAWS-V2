@@ -77,7 +77,7 @@ class ConnectBLEScreen(Screen):
 
     def explore_services_button_pressed(self):
         print("Exploring services...")
-        ble.run_async(ble.explore_services())
+        ble.run_async(ble.read_all_characteristics())
         print("Service exploration complete.")
         
 class PAWSApp(App):

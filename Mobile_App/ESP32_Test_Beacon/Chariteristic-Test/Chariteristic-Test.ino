@@ -4,6 +4,8 @@
 #include <BLE2902.h>
 // ====== UUIDs ======
 
+// 12346008-0000-1000-8000-00805F9B34FB
+
 // Services
 #define SETTING_SERVICE_UUID     "12345000-0000-1000-8000-00805F9B34FB"
 #define CONTROLS_SERVICE_UUID    "12346000-0000-1000-8000-00805F9B34FB"
@@ -46,7 +48,7 @@ BLECharacteristic* createNotifyCharacteristic(BLEService *service, const char *u
 // ====== Setup ======
 void setup() {
   Serial.begin(115200);
-
+  pinMode(debugPin, OUTPUT);
   BLEDevice::init("ESP32-Env-Device");
   BLEServer *server = BLEDevice::createServer();
 

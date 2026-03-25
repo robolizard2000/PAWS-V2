@@ -1,0 +1,120 @@
+<ConnectBLEScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label: ## title of the screen
+            text:'Connect Screen'
+            size_hint_y: None
+            height: 50
+            bold: True
+        BoxLayout: ## navigation buttons
+            orientation:'horizontal'
+            size_hint_y: None
+            height: 50
+            Button:
+                text: 'Connect'
+                on_press: root.manager.current = 'connect_ble'
+                disabled: True
+            Button:
+                text: 'Data'
+                on_press: root.manager.current = 'data_screen'
+            Button:
+                text: 'Settings'
+                on_press: root.manager.current = 'settings_screen'
+            Button:
+                text: 'Debug'
+                on_press: root.manager.current = 'debug_screen'
+        BoxLayout: ## content of the screen
+            Label:
+                bold: True
+                text: 'Settings go here'
+
+
+<DataScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text:'Data Screen'
+            size_hint_y: None
+            height: 50
+            bold: True
+        BoxLayout: ## navigation buttons
+            orientation:'horizontal'
+            size_hint_y: None
+            height: 50
+            Button:
+                text: 'Connect'
+                on_press: root.manager.current = 'connect_ble'
+            Button:
+                text: 'Data'
+                on_press: root.manager.current = 'data_screen'
+                disabled: True
+            Button:
+                text: 'Settings'
+                on_press: root.manager.current = 'settings_screen'
+            Button:
+                text: 'Debug'
+                on_press: root.manager.current = 'debug_screen'
+        BoxLayout: ## content of the screen
+            Label:
+                bold: True
+                text: 'Settings go here'
+
+<SettingsScreen>
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text:'Settings Screen'
+            size_hint_y: None
+            height: 50
+            bold: True
+        BoxLayout: ## navigation buttons
+            orientation:'horizontal'
+            size_hint_y: None
+            height: 50
+            Button:
+                text: 'Connect'
+                on_press: root.manager.current = 'connect_ble'
+            Button:
+                text: 'Data'
+                on_press: root.manager.current = 'data_screen'
+            Button:
+                text: 'Settings'
+                on_press: root.manager.current = 'settings_screen'
+                disabled: True
+            Button:
+                text: 'Debug'
+                on_press: root.manager.current = 'debug_screen'
+        BoxLayout: ## content of the screen
+            Label:
+                bold: True
+                text: 'Settings go here'
+
+<DebugScreen>
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text:'Debug Screen'
+            size_hint_y: None
+            height: 50
+            bold: True
+        BoxLayout: ## navigation buttons
+            orientation:'horizontal'
+            size_hint_y: None
+            height: 50
+            Button:
+                text: 'Connect'
+                on_press: root.manager.current = 'connect_ble'
+            Button:
+                text: 'Data'
+                on_press: root.manager.current = 'data_screen'
+            Button:
+                text: 'Settings'
+                on_press: root.manager.current = 'settings_screen'
+            Button:
+                text: 'Debug'
+                on_press: root.manager.current = 'debug_screen'
+                disabled: True
+        BoxLayout: ## content of the screen
+            Label:
+                bold: True
+                text: 'Settings go here'
