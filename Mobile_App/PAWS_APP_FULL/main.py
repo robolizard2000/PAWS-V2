@@ -2,10 +2,11 @@
 from kivy.app import App
 from kivy.uix.screenmanager import NoTransition, ScreenManager, Screen
 from kivy.utils import platform
+import threading
 
 ## BLE backend import
 import asyncio
-from BLE_Backend.ble_Manage import ble
+from platform_manage import ble, map_location
 
 ## Debug logging import
 from debug import DebugLog
@@ -83,6 +84,54 @@ class DataScreen(Screen):
     def __init__(self, **kwargs):
         super(DataScreen, self).__init__(**kwargs)
         self.debug = DebugLog(screen="DataScreen", enable=debug_enabled)
+        threading.Thread(target=self.update_data, daemon=True).start() 
+        self.update_enabled = False
+    
+    def update_data(self):
+        while True:
+            if self.update_enabled:
+                self.debug.log("Updating data...")
+                self.ids.temp_label.text = f"Temp: {ble.ble_data.data_chars[0].value} °C"
+                self.ids.humid_label.text = f"Humid: {ble.ble_data.data_chars[1].value} %"
+                self.ids.wind_label.text = f"Wind: {ble.ble_data.data_chars[2].value} m/s"
+                self.ids.rain_label.text = f"Rain: {ble.ble_data.data_chars[3].value} mm"
+                self.ids.light_label.text = f"Light: {ble.ble_data.data_chars[4].value} lx"
+                asyncio.sleep(5) # placeholder for actual data update logic, currently just logs every 5 seconds when updates are enabled
+
+
+    def start_data_updates(self): # subscribes to notifications for all characteristics with the "Notify" property and enables data updates, also logs the result of each subscription attempt
+        for char in ble.ble_data.data_chars:
+            if "Notify" in char.properties:
+                if ble.run_async(ble.start_notify(char.uuid)).result():
+                    self.debug.log(f"Subscribed to {char.name} notifications successfully.")
+                else:
+                    self.debug.log(f"Failed to subscribe to {char.name} notifications.")
+        self.update_enabled = True
+
+    def stop_data_updates(self): # unsubscribes from notifications for all characteristics with the "Notify" property and disables data updates, also logs the result of each unsubscription attempt
+        self.update_enabled = False
+        for char in ble.ble_data.data_chars:
+            if "Notify" in char.properties:
+                if ble.run_async(ble.stop_notify(char.uuid)).result():
+                    self.debug.log(f"Unsubscribed from {char.name} notifications successfully.")
+                else:
+                    self.debug.log(f"Failed to unsubscribe from {char.name} notifications.")
+
+
+    def on_pre_enter(self, *args):
+        self.debug.start()
+        self.debug.log("About to show screen")   
+    def on_enter(self, *args):
+        self.debug.log("Screen is now visible")
+    def on_leave(self, *args):
+        self.stop_data_updates()
+        self.debug.log("Screen hidden")
+        self.debug.stop()
+
+class ControlScreen(Screen):
+    def __init__(self, **kwargs):
+        super(ControlScreen, self).__init__(**kwargs)
+        self.debug = DebugLog(screen="ControlScreen", enable=debug_enabled)
 
     def on_pre_enter(self, *args):
         self.debug.start()
@@ -130,6 +179,7 @@ class PAWSApp(App):
         sm = ScreenManager(transition=NoTransition()) ## transition is set to none to make screen changes instant
         sm.add_widget(ConnectBLEScreen(name='connect_ble')) ## the names are what are uset to call the screen
         sm.add_widget(DataScreen(name='data_screen'))
+        sm.add_widget(ControlScreen(name='control_screen'))
         sm.add_widget(SettingsScreen(name='settings_screen'))
         sm.add_widget(DebugScreen(name='debug_screen'))
         return sm

@@ -9,7 +9,7 @@ class BLEBackend:
         self.loop = asyncio.new_event_loop()
         threading.Thread(target=self.loop.run_forever, daemon=True).start()
         self.ble_data = BLE_Data()
-
+    
     def run_async(self, coro): # creates a method to run an async function in the event loop and return the result as a Future object
         return asyncio.run_coroutine_threadsafe(coro, self.loop)
     
@@ -29,6 +29,32 @@ class BLEBackend:
             print("Disconnected")
             return True
         return False
+    
+    def notification_handler(self, sender, data): ## creates a notification handler function that will be called whenever a notification is received from the BLE device and prints the received data to the console
+        print(f"Notification from {sender}: {data}")
+        for char in self.ble_data.data_chars:
+            if char.uuid == sender: ## checks all chariteristics defined in the BLE_Data class to find the one that matches the sender of the notification and has the "Notify" property, then updates the value of that characteristic with the received data
+                char.value = int.from_bytes(data, byteorder='little')
+                print(f"Updated {char.name} value: {char.value}")
+
+    ## creates a notification handler function that will be called whenever a notification is received from the BLE device and prints the received data to the console
+    async def start_notify(self, char_uuid):
+        if not self.client or not self.client.is_connected:
+            print("Not connected")
+            return False
+
+        await self.client.start_notify(char_uuid, self.notification_handler)
+        print(f"Subscribed to {char_uuid}")
+        return True
+
+    ## stop notifications for a characteristic given its UUID
+    async def stop_notify(self, char_uuid):
+        if not self.client or not self.client.is_connected:
+            return False
+
+        await self.client.stop_notify(char_uuid)
+        print(f"Unsubscribed from {char_uuid}")
+        return True
 
     async def read_characteristic(self, char_uuid): # creates an async function to read the value of a characteristic given its UUID and return the value
         if self.client and self.client.is_connected:
@@ -47,75 +73,3 @@ class BLEBackend:
             if "Read" in char.properties:
                 value = self.run_async(self.read_characteristic(char.uuid)).result()
                 print(f"{char.name} ({char.uuid}): {value}")
-
-    async def explore_services(self): # creates an async function to explore the services and characteristics of the currently connected BLE device and print them to the console
-        try:
-            services = list(self.client.services)
-            if not services:
-                print("No services found on this device.")
-                return
-
-            print(f"Found {len(services)} service(s):")
-
-            for service in services:
-                print(f"\nService: {service.uuid}")
-                print(f"Description: {service.description}")
-                print(f"Handle: {service.handle}")
-
-                # Get characteristics for this service
-                characteristics = service.characteristics
-
-                if characteristics:
-                    print(f"  Characteristics ({len(characteristics)}):")
-                    print("  " + "-" * 76)
-
-                    for char in characteristics:
-                        print(f"    UUID: {char.uuid}")
-                        print(f"    Description: {char.description}")
-                        print(f"    Handle: {char.handle}")
-                        print(f"    Properties: {', '.join(char.properties)}")
-
-                        # Try to read the characteristic if it's readable
-                        if "read" in char.properties:
-                            try:
-                                value = await self.client.read_gatt_char(char.uuid)
-                                # Try to decode as string, otherwise show as hex
-                                try:
-                                    decoded_value = value.decode('utf-8')
-                                    print(f"    Value (string): {decoded_value}")
-                                except UnicodeDecodeError:
-                                    hex_value = ' '.join(f'{b:02x}' for b in value)
-                                    print(f"    Value (hex): {hex_value}")
-                                    print(f"    Value (raw bytes): {value}")
-                            except Exception as e:
-                                print(f"    Value: <Could not read - {e}>")
-
-                        # Show descriptors only if requested
-                        descriptors = char.descriptors
-                        if descriptors:
-                            print(f"    Descriptors ({len(descriptors)}):")
-                            for desc in descriptors:
-                                print(f"      UUID: {desc.uuid}")
-                                print(f"      Description: {desc.description}")
-                                print(f"      Handle: {desc.handle}")
-                                # Try to read descriptor if possible
-                                try:
-                                    desc_value = await self.client.read_gatt_descriptor(desc.handle)
-                                    try:
-                                        decoded_desc = desc_value.decode('utf-8')
-                                        print(f"      Value (string): {decoded_desc}")
-                                    except UnicodeDecodeError:
-                                        hex_desc = ' '.join(f'{b:02x}' for b in desc_value)
-                                        print(f"      Value (hex): {hex_desc}")
-                                except Exception as e:
-                                    print(f"      Value: <Could not read - {e}>")
-                            print()  # Empty line between characteristics
-                        else:
-                            print()
-                else:
-                    print("    No characteristics found for this service.")
-
-                print("-" * 80)
-
-        except Exception as e:
-            print(f"Error exploring services: {e}")
