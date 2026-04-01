@@ -1,4 +1,6 @@
 ## Kivy imports
+import os
+
 from kivy.app import App
 from kivy.uix.screenmanager import NoTransition, ScreenManager, Screen
 from kivy.utils import platform
@@ -6,6 +8,7 @@ import threading
 
 ## BLE backend import
 import asyncio
+import time
 from platform_manage import ble, map_location
 
 ## Debug logging import
@@ -84,20 +87,19 @@ class DataScreen(Screen):
     def __init__(self, **kwargs):
         super(DataScreen, self).__init__(**kwargs)
         self.debug = DebugLog(screen="DataScreen", enable=debug_enabled)
-        threading.Thread(target=self.update_data, daemon=True).start() 
+        self.data_updater_thread = None
         self.update_enabled = False
     
     def update_data(self):
-        while True:
-            if self.update_enabled:
+        while self.update_enabled:
+            if ble.state_changed: ## checks if updates are enabled and if a new notification has been received and processed, then updates the labels with the new data values from the BLE backend
                 self.debug.log("Updating data...")
-                self.ids.temp_label.text = f"Temp: {ble.ble_data.data_chars[0].value} °C"
-                self.ids.humid_label.text = f"Humid: {ble.ble_data.data_chars[1].value} %"
-                self.ids.wind_label.text = f"Wind: {ble.ble_data.data_chars[2].value} m/s"
-                self.ids.rain_label.text = f"Rain: {ble.ble_data.data_chars[3].value} mm"
-                self.ids.light_label.text = f"Light: {ble.ble_data.data_chars[4].value} lx"
-                asyncio.sleep(5) # placeholder for actual data update logic, currently just logs every 5 seconds when updates are enabled
-
+                self.ids.temp_label.text = f"Temp: {ble.ble_data.data_chars[0].value/100} °C"
+                self.ids.humidity_label.text = f"Humid: {ble.ble_data.data_chars[1].value/100} %"
+                self.ids.wind_speed_label.text = f"Wind: {ble.ble_data.data_chars[2].value/10} m/s"
+                self.ids.rainfall_label.text = f"Rain: {ble.ble_data.data_chars[3].value} mm"
+                self.ids.light_level_label.text = f"Light: {(ble.ble_data.data_chars[4].value/10)} lx"
+                time.sleep(1) # placeholder for actual data update logic, currently just logs every 5 seconds when updates are enabled
 
     def start_data_updates(self): # subscribes to notifications for all characteristics with the "Notify" property and enables data updates, also logs the result of each subscription attempt
         for char in ble.ble_data.data_chars:
@@ -107,16 +109,19 @@ class DataScreen(Screen):
                 else:
                     self.debug.log(f"Failed to subscribe to {char.name} notifications.")
         self.update_enabled = True
+        self.data_updater_thread = threading.Thread(target=self.update_data, daemon=True)
+        self.data_updater_thread.start()
 
     def stop_data_updates(self): # unsubscribes from notifications for all characteristics with the "Notify" property and disables data updates, also logs the result of each unsubscription attempt
         self.update_enabled = False
+        if self.data_updater_thread:
+            self.data_updater_thread.join()
         for char in ble.ble_data.data_chars:
             if "Notify" in char.properties:
                 if ble.run_async(ble.stop_notify(char.uuid)).result():
                     self.debug.log(f"Unsubscribed from {char.name} notifications successfully.")
                 else:
                     self.debug.log(f"Failed to unsubscribe from {char.name} notifications.")
-
 
     def on_pre_enter(self, *args):
         self.debug.start()
@@ -169,6 +174,16 @@ class DebugScreen(Screen):
     def on_leave(self, *args):
         self.debug.log("Screen hidden")
         self.debug.stop()
+    
+    def load(self, path, filename):
+        with open(os.path.join(path, filename[0])) as stream:
+            self.ids.debug_text.text = stream.read()
+class DebugScreenSave(Screen):
+    def __init__(self, **kwargs):
+        super(DebugScreenSave, self).__init__(**kwargs)
+    def save(self, path, filename):
+        with open(os.path.join(path, filename), 'w') as stream:
+            stream.write(self.text_input.text)
 
 class PAWSApp(App):
     def __init__(self, **kwargs):
@@ -182,6 +197,7 @@ class PAWSApp(App):
         sm.add_widget(ControlScreen(name='control_screen'))
         sm.add_widget(SettingsScreen(name='settings_screen'))
         sm.add_widget(DebugScreen(name='debug_screen'))
+        sm.add_widget(DebugScreenSave(name='debug_screen_save'))
         return sm
     
     def on_start(self):

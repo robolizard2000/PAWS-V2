@@ -9,6 +9,7 @@ class BLEBackend:
         self.loop = asyncio.new_event_loop()
         threading.Thread(target=self.loop.run_forever, daemon=True).start()
         self.ble_data = BLE_Data()
+        self.state_changed = False ## goes high when a notification appears 
     
     def run_async(self, coro): # creates a method to run an async function in the event loop and return the result as a Future object
         return asyncio.run_coroutine_threadsafe(coro, self.loop)
@@ -31,11 +32,15 @@ class BLEBackend:
         return False
     
     def notification_handler(self, sender, data): ## creates a notification handler function that will be called whenever a notification is received from the BLE device and prints the received data to the console
+        sender = str(sender)[0:36].upper() ## converts the sender to a string and uppercase to make it easier to compare with the UUIDs defined in the BLE_Data class
         print(f"Notification from {sender}: {data}")
         for char in self.ble_data.data_chars:
+            ## sender is in the form  12347005-0000-1000-8000-00805f9b34fb (Handle: 61)
             if char.uuid == sender: ## checks all chariteristics defined in the BLE_Data class to find the one that matches the sender of the notification and has the "Notify" property, then updates the value of that characteristic with the received data
                 char.value = int.from_bytes(data, byteorder='little')
                 print(f"Updated {char.name} value: {char.value}")
+                self.state_changed = True ## sets the state_changed flag to True to indicate that a new notification has been received and processed
+                break
 
     ## creates a notification handler function that will be called whenever a notification is received from the BLE device and prints the received data to the console
     async def start_notify(self, char_uuid):

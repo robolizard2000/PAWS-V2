@@ -98,7 +98,7 @@
             text: 'Sensor Data Live Updates'
             size_hint_y: None
             height: 50
-        GridLayout:
+        GridLayout: ## sensor data display
             cols: 2
             default_row_height: 40
             pos_hint: {"center_x": 0.5, "center_y": 0.5}
@@ -169,11 +169,117 @@
             text: 'Sensor Data Live Updates'
             size_hint_y: None
             height: 50
+        BoxLayout: ## sensor data display
+            orientation:'horizontal'
+            size_hint_y: None
+            height: 50
+            Label:
+                text:'Temp: '
+                id: temp_label
+            Label:
+                text:'Humid:'
+                id: humidity_label
+            Label:
+                text:'Wind: '
+                id: wind_speed_label
+            Label:
+                text:'Rain: '
+                id: rainfall_label
+            Label:
+                text:'Light: '
+                id: light_level_label
         Label:
-            text:''
-            
+            text:'Set Points'
+            size_hint_y: None
+            height: 50
+            bold: True
+        GridLayout: ## Set points
+            cols: 3
+            default_row_height: 40
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            Label: ## row 1
+                text: 'Temperature:'
+            TextInput:
+                id: temp_setpoint
+                text: 'N/A'
+                multiline: False
+            Label:
+                text:'*C'
+            Label: ## row 2
+                text: 'Temperature hystereses:'
+            TextInput:
+                id: temp_hysteresis
+                text: 'N/A'
+                multiline: False
+            Label:
+                text:'*C'
+            Label: ## row 3
+                text: 'Humidity:'
+            TextInput:
+                id: humidity_setpoint
+                text: 'N/A'
+                multiline: False
+            Label:
+                text:'%'
+            Label: ## row 4
+                text: 'Humidity hystereses:'
+            TextInput:
+                id: humidity_hysteresis
+                text: 'N/A'
+                multiline: False
+            Label:
+                text:'%'
+            Label: ## row 5
+                text: 'Wind speed Max:'
+            TextInput:
+                id: wind_speed_max
+                text: 'N/A'
+                multiline: False
+            Label:
+                text:'mph'
+            Label: ## row 6
+                text: 'Light Min:'
+            TextInput:
+                id: light_min
+                text: 'N/A'
+                multiline: False
+            Label:
+                text:'%'
 
-
+        Label:
+            text:'Manual controls'
+            size_hint_y: None
+            height: 50
+            bold: True
+        GridLayout: ## control buttons
+            cols: 4
+            #size_hint_y: None
+            #height: 50
+            Label:
+                text:'Lights'
+            Button:
+                text: 'Override enable'
+                id: light_override
+            Button:
+                text: 'Light toggle'
+                id: light_toggle
+                disabled: True
+            Label:
+                text:'Current state'
+                id: light_state
+            Label:
+                text: 'Windows'
+            Button:
+                text: 'Override enable'
+                id: window_override
+            Button:
+                text: 'Window toggle'
+                id: window_toggle
+                disabled: True
+            Label:
+                text:'Current state'
+                id: window_state
+    
 <SettingsScreen>
     BoxLayout:
         orientation: 'vertical'
@@ -202,10 +308,43 @@
             Button:
                 text: 'Debug'
                 on_press: root.manager.current = 'debug_screen'
-        BoxLayout: ## content of the screen
+        
+        GridLayout:
+            cols: 3
+            default_row_height: 40
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
             Label:
-                bold: True
-                text: 'Settings go here'
+                text:'Clock'
+            TextInput:
+                id: clock_settingraw
+                text: 'N/A'
+                multiline: False
+            Spinner:
+                id: clock_setting
+                text: 'Select Clock Scale'
+                values: ['Seconds', 'Minutes', 'Hours']
+            Label:
+                text:'LCD Back Light time out'
+            TextInput:
+                id: lcd_timeout_raw
+                text: 'N/A'
+                multiline: False
+            Spinner:
+                id: lcd_timeout
+                text: 'Select LCD Scale'
+                values: ['Seconds', 'Minutes', 'Hours']
+        Button:
+            text: 'Lock LCD'
+            id: lcd_lock
+        Button:
+            text: 'Debug Enable'
+            id: debug_enable
+        Label:
+            text:'Service Name'
+            id: service_name
+        Label:
+            text:'Local Name'
+            id: local_name
 
 <DebugScreen>
     BoxLayout:
@@ -215,7 +354,7 @@
             size_hint_y: None
             height: 50
             bold: True
-        BoxLayout: ## navigation buttons
+        BoxLayout: ## navigation buttons top
             orientation:'horizontal'
             size_hint_y: None
             height: 50
@@ -235,7 +374,117 @@
                 text: 'Debug'
                 on_press: root.manager.current = 'debug_screen'
                 disabled: True
-        BoxLayout: ## content of the screen
-            Label:
-                bold: True
-                text: 'Settings go here'
+        BoxLayout: ## navigation buttons debug
+            orientation:'horizontal'
+            size_hint_y: None
+            height: 50
+            Button:
+                text: 'Load Log'
+                on_press: root.manager.current = 'debug_screen'
+                disabled: True
+            Button:
+                text: 'Save Log'
+                on_press: root.manager.current = 'debug_screen_save'
+        Label: ## File location path top of screen
+            text: fc.path
+            size_hint_y: None
+            height: 30  
+        BoxLayout: ## Split screen 
+            orientation:'horizontal'
+            BoxLayout: ## File chooser stuff
+                orientation:'vertical'
+                BoxLayout:
+                    size_hint_y: None
+                    height: 30
+
+                    Button:
+                        text: 'Icon View'
+                        on_press: fc.view_mode = 'icon'
+                    Button:
+                        text: 'List View'
+                        on_press: fc.view_mode = 'list'
+
+                FileChooser:
+                    id: fc
+                    FileChooserIconLayout
+                    FileChooserListLayout
+                Button:
+                    text: 'Open'
+                    size_hint_y: None
+                    height: 30
+                    on_press: root.load(fc.path, fc.selection)
+            BoxLayout: ## Text Output
+                orientation:'vertical'
+                Label:
+                    text:'Contents'
+                    size_hint_y: None
+                    height: 30
+                TextInput:
+                    id: debug_text
+                    text: ''
+                    hint_text: 'debug text'  
+
+        
+<DebugScreenSave>
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text:'Debug Screen'
+            size_hint_y: None
+            height: 50
+            bold: True
+        BoxLayout: ## navigation buttons top
+            orientation:'horizontal'
+            size_hint_y: None
+            height: 50
+            Button:
+                text: 'Connect'
+                on_press: root.manager.current = 'connect_ble'
+            Button:
+                text: 'Data'
+                on_press: root.manager.current = 'data_screen'
+            Button:
+                text: 'Control'
+                on_press: root.manager.current = 'control_screen'
+            Button:
+                text: 'Settings'
+                on_press: root.manager.current = 'settings_screen'
+            Button:
+                text: 'Debug'
+                on_press: root.manager.current = 'debug_screen'
+                disabled: True
+        BoxLayout: ## navigation buttons debug
+            orientation:'horizontal'
+            size_hint_y: None
+            height: 50
+            Button:
+                text: 'Load Log'
+                on_press: root.manager.current = 'debug_screen'
+            Button:
+                text: 'Save Log'
+                on_press: root.manager.current = 'debug_screen_save'
+                disabled: True
+        BoxLayout:
+            size: root.size
+            pos: root.pos
+            orientation: "vertical"
+            FileChooserListView:
+                id: filechooser
+                on_selection: text_input.text = self.selection and self.selection[0] or ''
+
+            TextInput:
+                id: text_input
+                size_hint_y: None
+                height: 30
+                multiline: False
+
+            BoxLayout:
+                size_hint_y: None
+                height: 30
+                Button:
+                    text: "Cancel"
+                    on_release: root.cancel()
+
+                Button:
+                    text: "Save"
+                    on_release: root.save(filechooser.path, text_input.text)
