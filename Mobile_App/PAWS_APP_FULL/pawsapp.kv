@@ -93,46 +93,96 @@
                 text: 'Debug'
                 on_press: root.manager.current = 'debug_screen'
         ## content of the screen
-        Label: 
-            bold: True
-            text: 'Sensor Data Live Updates'
-            size_hint_y: None
-            height: 50
-        GridLayout: ## sensor data display
-            cols: 2
-            default_row_height: 40
-            pos_hint: {"center_x": 0.5, "center_y": 0.5}
-            Label:
-                text: 'Temperature:'
-            Label:
-                id: temp_label
-                text: 'N/A'
-            Label:
-                text: 'Humidity:'
-            Label:
-                id: humidity_label
-                text: 'N/A'
-            Label:
-                text: 'Wind Speed:'
-            Label:
-                id: wind_speed_label
-                text: 'N/A'
-            Label:
-                text: 'Rainfall:'
-            Label:
-                id: rainfall_label
-                text: 'N/A'
-            Label:
-                text:'Light level'
-            Label:
-                id: light_level_label
-                text: 'N/A'
-            Button:
-                text: 'Start'
-                on_press: root.start_data_updates()
-            Button:
-                text: 'Stop'
-                on_press: root.stop_data_updates()
+        BoxLayout:
+            orientation:'horizontal'
+            BoxLayout:
+                orientation:'vertical'
+                Label: 
+                    bold: True
+                    text: 'Sensor Data Live Updates'
+                    size_hint_y: None
+                    height: 50
+                GridLayout: ## sensor data display
+                    cols: 2
+                    default_row_height: 40
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    Label:
+                        text: 'Temperature:'
+                    Label:
+                        id: temp_label
+                        text: 'N/A'
+                    Label:
+                        text: 'Humidity:'
+                    Label:
+                        id: humidity_label
+                        text: 'N/A'
+                    Label:
+                        text: 'Wind Speed:'
+                    Label:
+                        id: wind_speed_label
+                        text: 'N/A'
+                    Label:
+                        text: 'Rainfall:'
+                    Label:
+                        id: rainfall_label
+                        text: 'N/A'
+                    Label:
+                        text:'Light level'
+                    Label:
+                        id: light_level_label
+                        text: 'N/A'
+                    Button:
+                        text: 'Start'
+                        on_press: root.start_data_updates()
+                    Button:
+                        text: 'Stop'
+                        on_press: root.stop_data_updates()
+            BoxLayout:
+                orientation:'vertical'
+                Label:
+                    text:'Geographical Data'
+                    bold: True
+                    size_hint_y: None
+                    height: 50
+                GridLayout:
+                    cols: 2
+                    default_row_height: 40
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    Label:
+                        text:'ON:'
+                    Label:
+                        text:'N/A'
+                        id: weather_Date
+                    Label:
+                        text:'Temp:'
+                    Label:
+                        text:'N/A'
+                        id: weather_temp
+                    Label:
+                        text:'Humidity:'
+                    Label:
+                        text:'N/A'
+                        id: weather_Humidity
+                    Label:
+                        text:'Wind:'
+                    Label:
+                        text:'N/A'
+                        id: weather_Wind
+                    Label:
+                        text:'chance Of Rain:'
+                    Label:
+                        text:'N/A'
+                        id: weather_Rain
+                TextInput:
+                    bold: True
+                    size_hint_y: None
+                    height: 40
+                    id: 'id'
+                    text: 'Southampton'
+                    hint_text: 'Location'
+                    id: data_location
+                    font_size: 20
+
 
 <ControlScreen>
     BoxLayout:

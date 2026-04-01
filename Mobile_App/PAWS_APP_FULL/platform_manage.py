@@ -1,24 +1,23 @@
 from kivy.utils import platform
 
-ble = None
-map_location = None
+ble , weather= None, None
 
 if platform == "android":
     from BLE_Backend.ble_Android import BLEBackend
-    #from MAP_Backend.map_Android import MapLocation
+    #from WEATHER_Backend.weather_Android import Weather
     ble = BLEBackend()
-    #map_location = MapLocation()
+    #weather = Weather()
 if platform == "linux":
     from BLE_Backend.ble_Linux import BLEBackend
-    #from MAP_Backend.map_Linux import MapLocation
-    ble = BLEBackend()
-    #map_location = MapLocation()
+    from WEATHER_Backend.weather_Linux import Weather
+    ble, weather = BLEBackend(), Weather()
 if platform == "win":
     pass
     #from BLE_Backend.ble_Windows import BLEBackend
-    #from MAP_Backend.map_Windows import MapLocation
+    #from WEATHER_Backend.weather_Windows import Weather
     #ble = BLEBackend()
-    #map_location = MapLocation()
+    #weather = Weather()
 else:
     print("Unsupported platform")
-    BLEBackend = None
+    ble,weather  = None, None
+ble = BLEBackend()

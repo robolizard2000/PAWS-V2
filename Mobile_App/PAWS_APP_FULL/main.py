@@ -9,7 +9,7 @@ import threading
 ## BLE backend import
 import asyncio
 import time
-from platform_manage import ble, map_location
+from platform_manage import ble, weather
 
 ## Debug logging import
 from debug import DebugLog

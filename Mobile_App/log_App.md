@@ -6,6 +6,9 @@ pip install --upgrade pip
  pip install bleak
 
 
+install
+pip install python-weather
+
 Increase attribute limit (BEST FIX)
 Go to:
 

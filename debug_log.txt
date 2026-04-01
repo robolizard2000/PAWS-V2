@@ -4,83 +4,8 @@
 [ConnectBLEScreen]: About to show screen
 [ConnectBLEScreen]: Screen is now visible
 [PAWSApp]: Debug logging started.
-[DebugScreen]: Debug logging started.
-[DebugScreen]: About to show screen
-[DebugScreen]: Screen is now visible
-[ConnectBLEScreen]: Screen hidden
-[ConnectBLEScreen]: Debug logging stopped.
-[SettingsScreen]: Debug logging started.
-[SettingsScreen]: About to show screen
-[SettingsScreen]: Screen is now visible
-[DebugScreen]: Screen hidden
-[DebugScreen]: Debug logging stopped.
-[DebugScreen]: Debug logging started.
-[DebugScreen]: About to show screen
-[DebugScreen]: Screen is now visible
-[SettingsScreen]: Screen hidden
-[SettingsScreen]: Debug logging stopped.
-[DebugScreen]: Screen hidden
-[DebugScreen]: Debug logging stopped.
-[DebugScreen]: Debug logging started.
-[DebugScreen]: About to show screen
-[DebugScreen]: Screen is now visible
-[DataScreen]: Debug logging started.
-[DataScreen]: About to show screen
-[DataScreen]: Screen is now visible
-[DebugScreen]: Screen hidden
-[DebugScreen]: Debug logging stopped.
-[ControlScreen]: Debug logging started.
-[ControlScreen]: About to show screen
-[ControlScreen]: Screen is now visible
-[DataScreen]: Failed to unsubscribe from Temp notifications.
-[DataScreen]: Failed to unsubscribe from Humid notifications.
-[DataScreen]: Failed to unsubscribe from Wind notifications.
-[DataScreen]: Failed to unsubscribe from Rain notifications.
-[DataScreen]: Failed to unsubscribe from Light notifications.
-[DataScreen]: Screen hidden
-[DataScreen]: Debug logging stopped.
-[SettingsScreen]: Debug logging started.
-[SettingsScreen]: About to show screen
-[SettingsScreen]: Screen is now visible
-[ControlScreen]: Screen hidden
-[ControlScreen]: Debug logging stopped.
-[DebugScreen]: Debug logging started.
-[DebugScreen]: About to show screen
-[DebugScreen]: Screen is now visible
-[SettingsScreen]: Screen hidden
-[SettingsScreen]: Debug logging stopped.
-[DataScreen]: Debug logging started.
-[DataScreen]: About to show screen
-[DataScreen]: Screen is now visible
-[DebugScreen]: Screen hidden
-[DebugScreen]: Debug logging stopped.
-[ConnectBLEScreen]: Debug logging started.
-[ConnectBLEScreen]: About to show screen
-[ConnectBLEScreen]: Screen is now visible
-[DataScreen]: Failed to unsubscribe from Temp notifications.
-[DataScreen]: Failed to unsubscribe from Humid notifications.
-[DataScreen]: Failed to unsubscribe from Wind notifications.
-[DataScreen]: Failed to unsubscribe from Rain notifications.
-[DataScreen]: Failed to unsubscribe from Light notifications.
-[DataScreen]: Screen hidden
-[DataScreen]: Debug logging stopped.
 [DataScreen]: Debug logging started.
 [DataScreen]: About to show screen
 [DataScreen]: Screen is now visible
 [ConnectBLEScreen]: Screen hidden
 [ConnectBLEScreen]: Debug logging stopped.
-[ControlScreen]: Debug logging started.
-[ControlScreen]: About to show screen
-[ControlScreen]: Screen is now visible
-[DataScreen]: Failed to unsubscribe from Temp notifications.
-[DataScreen]: Failed to unsubscribe from Humid notifications.
-[DataScreen]: Failed to unsubscribe from Wind notifications.
-[DataScreen]: Failed to unsubscribe from Rain notifications.
-[DataScreen]: Failed to unsubscribe from Light notifications.
-[DataScreen]: Screen hidden
-[DataScreen]: Debug logging stopped.
-[SettingsScreen]: Debug logging started.
-[SettingsScreen]: About to show screen
-[SettingsScreen]: Screen is now visible
-[ControlScreen]: Screen hidden
-[ControlScreen]: Debug logging stopped.
