@@ -88,7 +88,10 @@ class DataScreen(Screen):
         super(DataScreen, self).__init__(**kwargs)
         self.debug = DebugLog(screen="DataScreen", enable=debug_enabled)
         self.data_updater_thread = None
+        self.data_caller_thread = None
         self.update_enabled = False
+        self.weather_updater = None
+
     
     def update_data(self):
         while self.update_enabled:
@@ -109,11 +112,14 @@ class DataScreen(Screen):
                 else:
                     self.debug.log(f"Failed to subscribe to {char.name} notifications.")
         self.update_enabled = True
-        self.data_updater_thread = threading.Thread(target=self.update_data, daemon=True)
+        self.data_updater_thread = threading.Thread(target=self.update_data, daemon=True ) # daemon=True
+        self.data_caller_thread = threading.Thread(target=weather.loop) # daemon=True
+        self.data_caller_thread.start()
         self.data_updater_thread.start()
 
     def stop_data_updates(self): # unsubscribes from notifications for all characteristics with the "Notify" property and disables data updates, also logs the result of each unsubscription attempt
         self.update_enabled = False
+        weather.keep_updated = False
         if self.data_updater_thread:
             self.data_updater_thread.join()
         for char in ble.ble_data.data_chars:
@@ -129,7 +135,6 @@ class DataScreen(Screen):
     def on_enter(self, *args):
         self.debug.log("Screen is now visible")
     def on_leave(self, *args):
-        self.stop_data_updates()
         self.debug.log("Screen hidden")
         self.debug.stop()
 

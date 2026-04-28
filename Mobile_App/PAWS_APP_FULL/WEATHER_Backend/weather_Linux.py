@@ -7,7 +7,7 @@ from WEATHER_Backend.weather_structure import Weather_Data
 #from weather_structure import   Weather_Data
 class Weather:
     def __init__(self,  location:str = "Southampton", 
-                        Clock: int = 60, 
+                        Clock: int = 10, 
                         metric: bool = True):
         self.Location = location
         self.clock = Clock
@@ -21,7 +21,8 @@ class Weather:
 
     async def update_data(self) -> Weather_Data:
         output = Weather_Data()
-        async with python_weather.Client(unit=self.unit) as client:
+        print("Updating weather data...")
+        async with python_weather.Client() as client: # unit=self.unit
             weather = await client.get(self.Location)
             output.date = weather.daily_forecasts[0].date
             output.current_temp = weather.daily_forecasts[0].hourly_forecasts[0].temperature
@@ -36,8 +37,24 @@ class Weather:
             self.data = asyncio.run(self.update_data())
             self.checked = False
             time.sleep(self.clock)
+        self.keep_updated = True
 
-if __name__ == '__main__':
-    mp = Weather()
-    mp.data = asyncio.run(mp.update_data())
-    print(mp.data)
+#if __name__ == '__main__':
+    # Declare the client. The measuring unit used defaults to the metric system (celcius, km/h, etc.)
+    
+    #async def main():
+    #    async with python_weather.Client() as client:
+    #        weather = await client.get("New York")
+    #        print(weather.temperature)
+#
+    #asyncio.run(main())
+#    mp = Weather()
+#    print(mp.data)
+#    print(mp.Location)
+#    print(mp.clock)
+#    print(mp.unit)
+#    data_caller_thread = threading.Thread(target=mp.loop) # daemon=True
+#    data_caller_thread.start()
+#    while True:
+#        print(mp.data)
+#        time.sleep(5)

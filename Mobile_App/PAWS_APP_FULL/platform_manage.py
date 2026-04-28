@@ -21,3 +21,4 @@ else:
     print("Unsupported platform")
     ble,weather  = None, None
 ble = BLEBackend()
+weather = Weather()
