@@ -310,10 +310,12 @@
             Button:
                 text: 'Override enable'
                 id: light_override
+                on_press:root.Toggle_Light_Override()
             Button:
                 text: 'Light toggle'
                 id: light_toggle
                 disabled: True
+                on_press:root.Toggle_Light()
             Label:
                 text:'Current state'
                 id: light_state
@@ -322,13 +324,26 @@
             Button:
                 text: 'Override enable'
                 id: window_override
+                on_press:root.Toggle_Window_Override()
             Button:
                 text: 'Window toggle'
                 id: window_toggle
                 disabled: True
+                on_press: root.Toggle_Window()
             Label:
                 text:'Current state'
                 id: window_state
+        Label: 
+            text: 'Weather Monitoring'
+            size_hint_y: None
+            height: 50
+        Button:
+            size_hint_y: None
+            height: 50
+            text: 'Auto Control'
+            id: Weather_Monitoring_Toggle
+            on_press: root.Weather_Updater_Toggle()
+
     
 <SettingsScreen>
     BoxLayout:

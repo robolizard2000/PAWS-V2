@@ -7,16 +7,10 @@ if platform == "android":
     #from WEATHER_Backend.weather_Android import Weather
     ble = BLEBackend()
     #weather = Weather()
-if platform == "linux":
+if platform == "linux" or platform == "win":
     from BLE_Backend.ble_Linux import BLEBackend
     from WEATHER_Backend.weather_Linux import Weather
     ble, weather = BLEBackend(), Weather()
-if platform == "win":
-    pass
-    #from BLE_Backend.ble_Windows import BLEBackend
-    #from WEATHER_Backend.weather_Windows import Weather
-    #ble = BLEBackend()
-    #weather = Weather()
 else:
     print("Unsupported platform")
     ble,weather  = None, None

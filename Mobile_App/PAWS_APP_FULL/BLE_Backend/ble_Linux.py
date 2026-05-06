@@ -3,8 +3,12 @@ import threading
 from bleak import BleakScanner, BleakClient
 from BLE_Backend.ble_structure import BLE_Data #, Service, Characteristic
 
+
+
 class BLEBackend:
     def __init__(self):
+        self.on_result_callback = None
+
         self.client = None 
         self.loop = asyncio.new_event_loop()
         threading.Thread(target=self.loop.run_forever, daemon=True).start()
@@ -14,9 +18,24 @@ class BLEBackend:
     def run_async(self, coro): # creates a method to run an async function in the event loop and return the result as a Future object
         return asyncio.run_coroutine_threadsafe(coro, self.loop)
     
-    async def scan(self): # creates an async function to perform the BLE scan and return the results as a list of tuples (device name, device address)
-        devices = await BleakScanner.discover(timeout=5.0)
-        return [(d.name, d.address) for d in devices if d.name]
+    ##async def scan(self): # creates an async function to perform the BLE scan and return the results as a list of tuples (device name, device address)
+    ##    devices = await BleakScanner.discover(timeout=5.0)
+    ##    return [(d.name, d.address) for d in devices if d.name]
+    def start_scan(self):
+        threading.Thread(target=self._run_scan, daemon=True).start()
+    def _run_scan(self):
+        async def scan():
+            devices = await BleakScanner.discover(timeout=5.0)
+            return devices
+
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            devices = loop.run_until_complete(scan())
+            # Call the callback when done
+            self.on_result_callback(devices)
+        finally:
+            loop.close()
 
     async def connect(self, address): # creates an async function to connect to a BLE device given its address and returns True if the connection was successful, False otherwise
         self.client = BleakClient(address)

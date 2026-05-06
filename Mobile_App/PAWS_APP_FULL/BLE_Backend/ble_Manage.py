@@ -16,7 +16,9 @@ if platform == "android":
 #        print("Bluetooth is ready")
     ## from ble_Android import BLEBackend
     pass
-else:
+if platform == "linux":
+    from BLE_Backend.ble_Linux import BLEBackend
+if platform == "win":
     from BLE_Backend.ble_Linux import BLEBackend
 
 ble = BLEBackend()

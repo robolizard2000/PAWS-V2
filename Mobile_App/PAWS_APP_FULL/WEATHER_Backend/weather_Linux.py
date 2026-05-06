@@ -19,6 +19,43 @@ class Weather:
         else:
             self.unit = python_weather.IMPERIAL
 
+        self.UI_Updater = None
+
+    def start_updating(self):
+        self.running = True
+        threading.Thread(
+            target=self._run_loop,
+            daemon=True
+        ).start()
+
+    def stop_updating(self):
+        self.running = False
+
+    def _run_loop(self):
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+
+        async def update_once():
+            print("Updating weather data...")
+            async with python_weather.Client() as client:
+                weather = await client.get(self.Location)
+                output = Weather_Data()
+                output.date = weather.daily_forecasts[0].date.strftime("%Y-%m-%d")
+                output.current_temp = weather.daily_forecasts[0].hourly_forecasts[0].temperature
+                output.current_humid = weather.daily_forecasts[0].hourly_forecasts[0].humidity
+                output.current_wind = weather.daily_forecasts[0].hourly_forecasts[0].wind_speed
+                output.chance_rain = weather.daily_forecasts[0].hourly_forecasts[0].chances_of_rain
+                output.chance_dry = weather.daily_forecasts[0].hourly_forecasts[0].chances_of_remaining_dry
+                return output
+        try:
+            while self.running:
+                data = loop.run_until_complete(update_once())
+                self.UI_Updater(data)  # send result back
+                time.sleep(self.clock)  # wait before next update
+
+        finally:
+            loop.close()
+        
     async def update_data(self) -> Weather_Data:
         output = Weather_Data()
         print("Updating weather data...")

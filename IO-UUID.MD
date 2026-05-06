@@ -22,5 +22,5 @@
 12347001-0000-1000-8000-00805F9B34FB -     |     |Notify - Int32    - Temp                 - *c *100
 12347002-0000-1000-8000-00805F9B34FB -     |     |Notify - Int32    - Humid                - % *100 
 12347003-0000-1000-8000-00805F9B34FB -     |     |Notify - Int32    - Wind                 - mph * 10
-12347004-0000-1000-8000-00805F9B34FB -     |     |Notify - Int32    - Rain                 - Anolgue sacled or 1 for Rain ?
+12347004-0000-1000-8000-00805F9B34FB -     |     |Notify - Bool     - Rain                 - True for rain
 12347005-0000-1000-8000-00805F9B34FB -     |     |Notify - Int32    - Light                - % *10
