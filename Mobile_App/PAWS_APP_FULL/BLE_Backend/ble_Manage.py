@@ -20,5 +20,7 @@ if platform == "linux":
     from BLE_Backend.ble_Linux import BLEBackend
 if platform == "win":
     from BLE_Backend.ble_Linux import BLEBackend
-
+else:
+    raise NotImplementedError("Unsupported platform")
+print(f"Running on {platform} platform")
 ble = BLEBackend()

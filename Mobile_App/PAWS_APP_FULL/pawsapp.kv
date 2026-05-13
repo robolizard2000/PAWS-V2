@@ -1,9 +1,10 @@
 <ConnectBLEScreen>:
-
     BoxLayout:
         orientation: 'vertical'
         Label: ## title of the screen
             text:'Connect Screen'
+            id: title_Lable 
+            color: 1 , 0 , 0 , 1
             size_hint_y: None
             height: 50
             bold: True
@@ -69,6 +70,7 @@
         orientation: 'vertical'
         Label:
             text:'Data Screen'
+            id: title_Lable 
             size_hint_y: None
             height: 50
             bold: True
@@ -95,7 +97,7 @@
         ## content of the screen
         BoxLayout:
             orientation:'horizontal'
-            BoxLayout:
+            BoxLayout: ## Data from the embedded system
                 orientation:'vertical'
                 Label: 
                     bold: True
@@ -137,7 +139,7 @@
                     Button:
                         text: 'Stop'
                         on_press: root.stop_data_updates()
-            BoxLayout:
+            BoxLayout: ## Data from the Wheather
                 orientation:'vertical'
                 Label:
                     text:'Geographical Data'
@@ -190,6 +192,7 @@
         Label:
             text:'Control Screen'
             size_hint_y: None
+            id: title_Lable 
             height: 50
             bold: True
         BoxLayout: ## navigation buttons
@@ -218,11 +221,11 @@
             bold: True
             text: 'Sensor Data Live Updates'
             size_hint_y: None
-            height: 50
+            height: 30
         BoxLayout: ## sensor data display
             orientation:'horizontal'
             size_hint_y: None
-            height: 50
+            height: 30
             Label:
                 text:'Temp: '
                 id: temp_label
@@ -241,12 +244,11 @@
         Label:
             text:'Set Points'
             size_hint_y: None
-            height: 50
+            height: 30
             bold: True
         GridLayout: ## Set points
             cols: 3
-            default_row_height: 40
-            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            #pos_hint: {"center_x": 0.5, "center_y": 0.5}
             Label: ## row 1
                 text: 'Temperature:'
             TextInput:
@@ -299,20 +301,22 @@
         Label:
             text:'Manual controls'
             size_hint_y: None
-            height: 50
+            height: 30
             bold: True
         GridLayout: ## control buttons
+            size_hint_y: None
+            default_row_height: 30
             cols: 4
-            #size_hint_y: None
-            #height: 50
             Label:
                 text:'Lights'
             Button:
                 text: 'Override enable'
+                #size_hint_y: None
                 id: light_override
                 on_press:root.Toggle_Light_Override()
             Button:
                 text: 'Light toggle'
+                #size_hint_y: None
                 id: light_toggle
                 disabled: True
                 on_press:root.Toggle_Light()
@@ -323,10 +327,12 @@
                 text: 'Windows'
             Button:
                 text: 'Override enable'
+                #size_hint_y: None
                 id: window_override
                 on_press:root.Toggle_Window_Override()
             Button:
                 text: 'Window toggle'
+                #size_hint_y: None
                 id: window_toggle
                 disabled: True
                 on_press: root.Toggle_Window()
@@ -336,7 +342,8 @@
         Label: 
             text: 'Weather Monitoring'
             size_hint_y: None
-            height: 50
+            bold: True
+            height: 30
         Button:
             size_hint_y: None
             height: 50
@@ -351,6 +358,7 @@
         Label:
             text:'Settings Screen'
             size_hint_y: None
+            id: title_Lable 
             height: 50
             bold: True
         BoxLayout: ## navigation buttons

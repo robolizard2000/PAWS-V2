@@ -1,0 +1,48 @@
+[Global]: Debug logging started.
+[Global]: Starting PAWSApp
+[ConnectBLEScreen]: Debug logging started.
+[ConnectBLEScreen]: About to show screen
+[ConnectBLEScreen]: Screen is now visible
+[PAWSApp]: Debug logging started.
+[ConnectBLEScreen]: Scan button pressed
+[ConnectBLEScreen]: Device found: None at address 01:5B:A9:84:76:A5
+[ConnectBLEScreen]: Device found: None at address 42:EE:AC:E9:1E:35
+[ConnectBLEScreen]: Scan button pressed
+[ConnectBLEScreen]: Device found: None at address 42:EE:AC:E9:1E:35
+[ConnectBLEScreen]: Device found: PAWS at address BC:DD:C2:CC:E3:46
+[ConnectBLEScreen]: Device found: None at address 01:5B:A9:84:76:A5
+[ConnectBLEScreen]: Selected device: PAWS
+[ConnectBLEScreen]: Connecting to: PAWS
+[ConnectBLEScreen]: Device address: BC:DD:C2:CC:E3:46
+[ConnectBLEScreen]: Connection successful
+[DataScreen]: Debug logging started.
+[DataScreen]: About to show screen
+[DataScreen]: Screen is now visible
+[ConnectBLEScreen]: Screen hidden
+[ConnectBLEScreen]: Debug logging stopped.
+[DataScreen]: Subscribed to Temp notifications successfully.
+[DataScreen]: Subscribed to Humid notifications successfully.
+[DataScreen]: Subscribed to Wind notifications successfully.
+[DataScreen]: Subscribed to Rain notifications successfully.
+[DataScreen]: Subscribed to Light notifications successfully.
+[ControlScreen]: Debug logging started.
+[ControlScreen]: About to show screen
+[ControlScreen]: Screen is now visible
+[DataScreen]: Screen hidden
+[DataScreen]: Debug logging stopped.
+[DataScreen]: Updating data...
+[DataScreen]: Updating data...
+[DataScreen]: Updating data...
+[DataScreen]: Updating data...
+[DataScreen]: Updating data...
+[DataScreen]: Updating data...
+[DataScreen]: Updating data...
+[DataScreen]: Updating data...
+[DataScreen]: Updating data...
+[DataScreen]: Updating data...
+[DataScreen]: Updating data...
+[DataScreen]: Updating data...
+[PAWSApp]: Disconnecting from device on app exit...
+[PAWSApp]: Disconnected successfully on app exit.
+[PAWSApp]: Debug logging stopped.
+[Global]: Debug logging stopped.

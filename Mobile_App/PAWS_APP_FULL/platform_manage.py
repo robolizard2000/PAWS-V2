@@ -13,6 +13,7 @@ if platform == "linux" or platform == "win":
     ble, weather = BLEBackend(), Weather()
 else:
     print("Unsupported platform")
-    ble,weather  = None, None
-ble = BLEBackend()
-weather = Weather()
+    from BLE_Backend.ble_Linux import BLEBackend
+    from WEATHER_Backend.weather_Linux import Weather
+    ble, weather = None, None
+ble, weather = BLEBackend(), Weather()
